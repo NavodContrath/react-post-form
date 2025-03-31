@@ -4,16 +4,30 @@ function App() {
   const [formData, setFormData] = useState({
     author: "",
     title: "",
-    content: "",
+    body: "",
     public: false,
   })
   function handleFormData(e) {
-    e.preventDefault()
-    const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
+    const value = e.target.type === "checkbox" ? e.target.checked : e.target.value.trim()
     setFormData(() => ({
       ...formData,
       [e.target.name]: value,
     }))
+    console.log(formData)
+  }
+  function handleSubmit(e) {
+    e.preventDefault()
+
+    fetch('https://67eab80334bcedd95f64634f.mockapi.io/api/posts2/post', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    })
+      .then(res => res.json())
+      .then(data => console.log("seuccess", data))
+      .catch(err => console.log("error", err))
     console.log(formData)
   }
 
@@ -27,7 +41,7 @@ function App() {
           </div>
           <div className="card-body">
 
-            <form className=" g-3 needs-validation" onSubmit={handleFormData}>
+            <form className=" g-3 needs-validation" onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="validationCustom01" className="form-label">Post's author</label>
                 <input type="text" className="form-control" id="name" name="author" value={formData.author} onChange={handleFormData} required />
@@ -37,8 +51,8 @@ function App() {
                 <input type="text" className="form-control" id="title" name="title" value={formData.title} onChange={handleFormData} required />
               </div>
               <div className="mb-3">
-                <label htmlFor="" className="form-label">Post's content</label>
-                <textarea className="form-control" name="content" id="content" value={formData.content} onChange={handleFormData}></textarea>
+                <label htmlFor="" className="form-label">Post's body</label>
+                <textarea className="form-control" name="body" id="body" value={formData.content} onChange={handleFormData}></textarea>
               </div>
               <div className="mb-3">
                 <input type="checkbox" name="public" id="public" checked={formData.public} onChange={handleFormData} />
