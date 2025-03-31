@@ -1,6 +1,21 @@
 import { useState } from 'react'
 
 function App() {
+  const [formData, setFormData] = useState({
+    author: "",
+    title: "",
+    content: "",
+  })
+  function handleFormData(e) {
+    e.preventDefault()
+    const value = e.target.type === "checkbox" ? e.target.checked : e.target.value
+    setFormData(() => ({
+      ...formData,
+      [e.target.name]: value,
+    }))
+
+  }
+  console.log(formData)
 
   return (
     <>
@@ -12,19 +27,21 @@ function App() {
           </div>
           <div className="card-body">
 
-            <form className=" g-3 needs-validation" novalidate>
-              <div>
-                <label for="validationCustom01" className="form-label">Post's author</label>
-                <input type="text" className="form-control" id="author-name" name="author-name" required />
-              </div>
-              <div >
-                <label for="validationCustom02" className="form-label">Post's title</label>
-                <input type="text" className="form-control" id="post-title" name="post-title" required />
-              </div>
-
+            <form className=" g-3 needs-validation" onSubmit={handleFormData}>
               <div className="mb-3">
-                <label for="" className="form-label">Post's content</label>
-                <textarea className="form-control" name="post-content" id="post-content" rows="3"></textarea>
+                <label htmlFor="validationCustom01" className="form-label">Post's author</label>
+                <input type="text" className="form-control" id="name" name="author" value={formData.author} onChange={handleFormData} required />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="validationCustom02" className="form-label">Post's title</label>
+                <input type="text" className="form-control" id="title" name="title" value={formData.title} onChange={handleFormData} required />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="" className="form-label">Post's content</label>
+                <textarea className="form-control" name="content" id="content" value={formData.content} onChange={handleFormData}></textarea>
+              </div>
+              <div className="mb-3">
+                <input type="checkbox" name="public" id="public" onChange={handleFormData} required />
               </div>
               <div>
                 <button className="btn btn-primary" type="submit">Submit form</button>
