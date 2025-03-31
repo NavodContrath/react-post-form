@@ -7,6 +7,9 @@ function App() {
     body: "",
     public: false,
   })
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
   function handleFormData(e) {
     const value = e.target.type === "checkbox" ? e.target.checked : e.target.value.trim()
     setFormData(() => ({
@@ -28,9 +31,15 @@ function App() {
       .then(res => res.json())
       .then(data => {
         console.log("seuccess", data)
+        setAlertMessage("Il post è stato inviato con successo!");
+        setAlertType("success");
         setFormData({ author: "", title: "", content: "", public: false });
       })
-      .catch(err => console.log("error", err))
+      .catch(err => {
+        console.log("error", err)
+        setAlertMessage("Errore nell'invio del post. Riprova!");
+        setAlertType("danger");
+      })
     console.log(formData)
   }
 
@@ -43,7 +52,6 @@ function App() {
             <h3>Send your request</h3>
           </div>
           <div className="card-body">
-
             <form className=" g-3 needs-validation" onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="validationCustom01" className="form-label">Post's author</label>
@@ -60,6 +68,11 @@ function App() {
               <div className="mb-3">
                 <input type="checkbox" name="public" id="public" checked={formData.public} onChange={handleFormData} />
               </div>
+              {alertMessage && (
+                <div className={`alert alert-${alertType}`} role="alert">
+                  {alertMessage}
+                </div>
+              )}
               <div>
                 <button className="btn btn-primary" type="submit">Submit form</button>
               </div>
