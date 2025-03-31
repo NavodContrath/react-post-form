@@ -5,6 +5,7 @@ function App() {
     author: "",
     title: "",
     content: "",
+    public: false,
   })
   function handleFormData(e) {
     e.preventDefault()
@@ -13,9 +14,8 @@ function App() {
       ...formData,
       [e.target.name]: value,
     }))
-
+    console.log(formData)
   }
-  console.log(formData)
 
   return (
     <>
@@ -41,7 +41,7 @@ function App() {
                 <textarea className="form-control" name="content" id="content" value={formData.content} onChange={handleFormData}></textarea>
               </div>
               <div className="mb-3">
-                <input type="checkbox" name="public" id="public" onChange={handleFormData} required />
+                <input type="checkbox" name="public" id="public" checked={formData.public} onChange={handleFormData} />
               </div>
               <div>
                 <button className="btn btn-primary" type="submit">Submit form</button>
